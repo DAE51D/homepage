@@ -9,9 +9,10 @@ export function parseWikiJsMetrics(data) {
   const result = { pages: null, users: null, groups: null };
 
   for (const line of text.split(/\r?\n/)) {
-    const match = /^(wiki_pages_total|wiki_users_total|wiki_groups_total)\s+([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\s*$/.exec(
-      line,
-    );
+    const match =
+      /^(wiki_pages_total|wiki_users_total|wiki_groups_total)\s+([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\s*$/.exec(
+        line,
+      );
     if (!match) continue;
 
     const value = Number(match[2]);

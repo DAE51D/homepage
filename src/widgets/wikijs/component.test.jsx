@@ -39,4 +39,26 @@ describe("widgets/wikijs/component", () => {
     expectBlockValue(container, "wikijs.users", 8);
     expectBlockValue(container, "wikijs.groups", 3);
   });
+
+  it("renders an API error", () => {
+    useWidgetAPI.mockReturnValue({ data: undefined, error: "metrics unavailable" });
+
+    const { container } = renderWithProviders(<Component service={{ widget: { type: "wikijs" } }} />, {
+      settings: { hideErrors: false },
+    });
+
+    expect(container.textContent).toContain("widget.api_error");
+  });
+
+  it("renders placeholders for missing metrics", () => {
+    useWidgetAPI.mockReturnValue({ data: { pages: null, users: undefined, groups: 3 }, error: undefined });
+
+    const { container } = renderWithProviders(<Component service={{ widget: { type: "wikijs" } }} />, {
+      settings: { hideErrors: false },
+    });
+
+    expectBlockValue(container, "wikijs.pages", "-");
+    expectBlockValue(container, "wikijs.users", "-");
+    expectBlockValue(container, "wikijs.groups", 3);
+  });
 });
